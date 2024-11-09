@@ -1,2 +1,2 @@
-# tccg
-an original card terminal card game
+# tcc-cg
+an original terminal card game
