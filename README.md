@@ -1,7 +1,3 @@
-Here's a draft for a **README.md** file introducing *Tensor::Concord*, outlining the game mechanics, and explaining its core elements. This README assumes you’re at the early stage of development and leaves room for updates as the project evolves.
-
----
-
 # Tensor::Concord
 
 **Tensor::Concord** is a strategic trading card game (TCG) where players harness the power of **tensors** to summon champions, activate artifacts, and battle for dominance in the realm of **Tensoria**. Designed for both casual and competitive players, Tensor::Concord combines deep strategy with engaging gameplay mechanics.
@@ -127,7 +123,6 @@ make clean
 ---
 
 ## **Contribution Guidelines**
-This is a learning project, but contributions are welcome!  
-Feel free to fork the repository and submit pull requests with new features, bug fixes, or optimizations.
+This is a learning project, as such, it may underperform, but I won't be really investing into it as game but more as an experience for game development.
 
 ---
