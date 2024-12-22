@@ -1,24 +1,18 @@
-#include <SFML/Graphics.hpp>
+#include "game.h"
+#include <iostream>
 
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        window.clear();
-        window.draw(shape);
-        window.display();
+int main() {
+    try {
+        std::cout << "Welcome to Tensor Concord (Terminal Version)\n"
+                  << "===========================================\n\n";
+        
+        Game game;
+        game.run();
+        
+        return 0;
+    } 
+    catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
     }
-
-    return 0;
 }
