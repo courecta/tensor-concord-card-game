@@ -1,18 +1,29 @@
 #pragma once
+
+#include <iostream>
 #include <string>
+#include <cstring>
 #include <vector>
 #include <random>
+#include <algorithm>
 #include <chrono>
-#include <iostream>
+#include <iomanip>
+#include <sstream>
+#include <thread>
 
-// Forward declarations
+// Using PDCurses on windows, please follow README.md for instructions if compilation does not work
+#include <curses.h>
+#include "gameui.h"  // Add this include
+
 struct Card;
 struct GameState;
 class Game;
+class GameUI;  // Add this line
 
-// Card structure
-struct Card {
-    enum Type { 
+struct Card
+{
+    enum Type
+    {
         CHAMPION,
         ARTIFACT,
         TENSOR
@@ -23,13 +34,16 @@ struct Card {
     int attack;
     int health;
     int effect;
+    int turnsInPlay = 0;
+    bool hasAttackedThisTurn = false;
 
     static Card createChampion(const std::string& name, int cost, int attack, int health);
     static Card createTensor(const std::string& name, int cost, int energyAmount);
+    static Card createArtifact(const std::string& name, int cost, int effectValue);
 };
 
-// Game state
-struct GameState {
+struct GameState
+{
     int playerHealth = 10;
     int enemyHealth = 10;
     int playerEnergy = 1;
@@ -46,18 +60,27 @@ struct GameState {
     void printGameState() const;
 };
 
-// Main game class
-class Game {
+class Game
+{
 private:
     GameState state;
     std::mt19937 rng;
+    WINDOW* mainwin;  // Main window for the game
 
 public:
     Game();
+    ~Game();  // Add destructor to clean up PDCurses
     void run();
 
 private:
-    void setupGame();
+    // New UI methods
+    void initializeUI();
+    void cleanupUI();
+    void refreshUI();
+    int getMenuChoice(const std::vector<std::string>& options, int startY);
+    void displayMenu();
+    void handleKeyboardInput();
+    void initializeGame();
     void drawCard(std::vector<Card>& hand);
     void handleCommand(const std::string& cmd);
     void playCardFromHand(int cardIndex);
@@ -66,5 +89,10 @@ private:
     void performEnemyTurn();
     void playEnemyCard(int cardIndex);
     void printHelp() const;
-    bool gameOver() const;
+    void showHelpMenu() const;
+    bool isGameOver() const;
+    void handleAction(int action);  // Add these new method declarations
+    bool promptYesNo(const std::string& question);  // Add these new method declarations
 };
+
+constexpr size_t MAX_FIELD_SIZE = 4;

@@ -1,5 +1,0 @@
-/home/courecta/tensor-concord-card-game/build/CMakeFiles/TensorConcord.dir
-/home/courecta/tensor-concord-card-game/build/CMakeFiles/run.dir
-/home/courecta/tensor-concord-card-game/build/CMakeFiles/clean_all.dir
-/home/courecta/tensor-concord-card-game/build/CMakeFiles/edit_cache.dir
-/home/courecta/tensor-concord-card-game/build/CMakeFiles/rebuild_cache.dir

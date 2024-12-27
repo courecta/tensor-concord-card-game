@@ -1,1 +1,0 @@
-/usr/sbin/c++  -Wall -Wl,--dependency-file,CMakeFiles/TensorConcord.dir/link.d CMakeFiles/TensorConcord.dir/src/game.cpp.o CMakeFiles/TensorConcord.dir/src/main.cpp.o -o bin/TensorConcord
