@@ -1,23 +1,67 @@
 #include "game.h"
-#include "gameui.h"  // Add this line
+
+const int GameState::TensorState::RAINBOW_COLORS[7] = {
+    COLOR_RED, COLOR_YELLOW, COLOR_GREEN,
+    COLOR_CYAN, COLOR_BLUE, COLOR_MAGENTA, COLOR_WHITE
+};
 
 void GameState::initializeDeck() {
     deck.clear();
-    // 50 cards: 75% champion (37/38), 15% artifact (~7/8), 10% tensor (5).
-    // For simplicity, 37 champion, 8 artifact, 5 tensor:
+    
+    const char* championNames[] = {
+        "Netrunner", "Cybermage", "Datascraper", "GridKnight",
+        "ByteBlade", "SyncMaster", "CodeWeaver", "VoidHacker"
+    };
+    
+    const char* artifactNames[] = {
+        "Neural Link", "BioAugment", "DataCore", "SynapseBoost",
+        "TechPlating", "QuickChips", "PowerNode", "GridAmp"
+    };
+    
+    const char* tensorNames[] = {
+        "Data Shard", "Energy Core", "Power Node", "Logic Gate", "Sync Crystal"
+    };
+
+    const char* roleNames[4][8] = {
+        // MERC names
+        {"Bounty", "Hunter", "Merc", "Gunner", "Soldier", "Warrior", "Fighter", "Sniper"},
+        // NOMAD names
+        {"Wanderer", "Drifter", "Ranger", "Scout", "Tracker", "Pathfinder", "Guide", "Explorer"},
+        // CORPO names
+        {"Executive", "Manager", "Director", "Leader", "Chief", "Boss", "Head", "Commander"},
+        // MAGE names
+        {"Wizard", "Sorcerer", "Mage", "Caster", "Mystic", "Sage", "Scholar", "Adept"}
+    };
+
+    // Create champions with role-appropriate names
     for (int i = 0; i < 37; i++) {
-        deck.push_back(Card::createChampion("Champion", 1 + (i % 3), 1 + (i % 3), 2 + (i % 2)));
+        int roleIdx = (i / 4) % 4;
+        Card champion = Card::createChampion(
+            roleNames[roleIdx][i % 8],
+            1 + (i % 3),      // cost
+            1 + (i % 3),      // attack
+            2 + (i % 2)       // health
+        );
+        champion.faction = Card::Faction(1 + (i % 4));  // TECHNO to VIRTU_MACHINA
+        champion.role = Card::Role(1 + ((i / 4) % 4));  // MERC to MAGE
+        deck.push_back(champion);
     }
+
+    // Create artifacts with themed names
     for (int i = 0; i < 8; i++) {
-        // +1 or +2 effect
         int buff = (i % 2 == 0) ? 1 : 2;
-        deck.push_back(Card::createArtifact("Artifact", buff, buff));
+        deck.push_back(Card::createArtifact(artifactNames[i], buff, buff));
     }
+
+    // Create tensors with themed names
     for (int i = 0; i < 5; i++) {
         int energyBoost = (i % 2 == 0) ? 1 : 2;
-        deck.push_back(Card::createTensor("Tensor", 0, energyBoost));
+        deck.push_back(Card::createTensor(tensorNames[i], 0, energyBoost));
     }
+
     std::shuffle(deck.begin(), deck.end(), std::mt19937(std::random_device{}()));
+    tensor.current = 0;
+    tensor.maximum = 3;
 }
 
 void GameState::printGameState() const {
@@ -51,6 +95,16 @@ void GameState::printGameState() const {
     mvprintw(LINES/2-1, infoX+1, "Phase: %s", 
              isPlayerTurn ? "Your Turn" : "Enemy Turn");
 
+    // Draw tensor gauge with rainbow colors
+    GameUI::drawTensorGauge(LINES/2-3, infoX+1, tensor.current, tensor.maximum);
+    
+    // Show maximum value
+    std::string maxInfo = "Max: " + std::to_string(tensor.maximum);
+    if (tensor.maximum < tensor.ABSOLUTE_MAX) {
+        maxInfo += " (Next: " + std::to_string(tensor.maximum + 1) + ")";
+    }
+    mvprintw(LINES/2-2, infoX+1, "%s", maxInfo.c_str());
+
     // Player section in panel
     attron(A_BOLD);
     mvprintw(LINES/2+1, infoX+1, "Your Status");
@@ -79,14 +133,16 @@ bool Game::isGameOver() const {
         mvprintw(LINES/2, (COLS-40)/2, "Game Over - The enemy has achieved Concord!");
         refresh();
         napms(2000);
-        return true;
+        endwin();  // Clean up ncurses
+        exit(0);   // Exit program
     }
     if (state.enemyHealth <= 0) {
         clear();
         mvprintw(LINES/2, (COLS-40)/2, "Congratulations - You have achieved Concord!");
         refresh();
         napms(2000);
-        return true;
+        endwin();  // Clean up ncurses
+        exit(0);   // Exit program
     }
     return false;
 }

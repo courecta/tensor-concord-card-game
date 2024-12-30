@@ -1,25 +1,9 @@
 #include "game.h"
 
-// Card static methods implementation
-Card Card::createChampion(const std::string& name, int cost, int attack, int health)
-{
-    return Card{CHAMPION, name, cost, attack, health, 0};
-}
-
-Card Card::createTensor(const std::string& name, int cost, int energyAmount)
-{
-    return Card{TENSOR, name, cost, 0, 0, energyAmount};
-}
-
-Card Card::createArtifact(const std::string& name, int cost, int effectValue)
-{
-    return Card{ARTIFACT, name, cost, 0, 0, effectValue};
-}
-
 // Game class implementation
-Game::Game() : rng(std::chrono::steady_clock::now().time_since_epoch().count())
-{
+Game::Game() : rng(std::chrono::steady_clock::now().time_since_epoch().count()) {
     initializeUI();
+    GameUI::initializeAllColors();  // Initialize all colors at once
     initializeGame();
 }
 
@@ -52,6 +36,26 @@ void Game::initializeGame()
 }
 
 void Game::run() {
+    std::vector<std::string> mainMenuOptions = {
+        "Start Game",
+        "Practice Minigames",
+        "Quit"
+    };
+    
+    bool running = true;
+    while(running) {
+        int choice = showMenu(mainMenuOptions, "TENSOR CONCORD");
+        switch(choice) {
+            case 0: playMainGame(); break;
+            case 1: playMinigameMenu(); break;
+            case 2: /* fallthrough */
+            case -1: running = false; break;
+        }
+    }
+}
+
+// Rename the original run() to:
+void Game::playMainGame() {
     int selectedAction = 0;
     bool running = true;
     
@@ -224,40 +228,6 @@ bool Game::promptYesNo(const std::string& question) {
     }
 }
 
-int Game::getMenuChoice(const std::vector<std::string>& options, int startY) {
-    int choice = 0;
-    int maxChoice = options.size() - 1;
-
-    while(true) {
-        // Clear previous options
-        for(int i = 0; i <= maxChoice; i++) {
-            mvprintw(startY + i, 0, "%-40s", "");
-        }
-        
-        // Print options
-        for(size_t i = 0; i < options.size(); i++) {
-            mvprintw(startY + i, 2, "%c %s", 
-                    (i == choice ? '>' : ' '), 
-                    options[i].c_str());
-        }
-        refresh();
-
-        int ch = getch();
-        switch(ch) {
-            case KEY_UP:
-                choice = (choice > 0) ? choice - 1 : maxChoice;
-                break;
-            case KEY_DOWN:
-                choice = (choice < maxChoice) ? choice + 1 : 0;
-                break;
-            case '\n':
-                return choice;
-            case 27:  // ESC
-                return -1;
-        }
-    }
-}
-
 void Game::endPlayerTurn() {
     for (auto& champ : state.playerField) {
         if (champ.type == Card::CHAMPION) {
@@ -268,12 +238,42 @@ void Game::endPlayerTurn() {
         }
     }
 
+    // Check for Virtu-Machina synergy effects at turn end
+    int vmCount = 0;
+    for (const auto& card : state.playerField) {
+        if (card.type == Card::CHAMPION && card.faction == Card::Faction::VIRTU_MACHINA) {
+            vmCount++;
+        }
+    }
+    
+    if (vmCount >= 2) {  // If VM synergy is active
+        int synergyLevel = calculateSynergyLevel(state.playerField, Card::Faction::VIRTU_MACHINA);
+        state.playerEnergy += synergyLevel;  // Energy buff
+        increaseTensorGauge(1);  // Tensor increase from VM synergy
+    }
+
     state.isPlayerTurn = false;
     state.playerEnergy += 1;
     drawCard(state.playerHand);
+    checkAndApplySynergies(state.playerField, state.playerHand);  // Recheck synergies
 
     mvprintw(LINES-1, 2, "Ending your turn...");
     refresh();
     napms(1500);
+    
+    // Check for tensor peak before enemy turn
+    if (state.tensor.current >= state.tensor.maximum) {
+        handleTensorPeak();
+    }
+    
     performEnemyTurn();
 }
+
+// Remove these duplicate function implementations since they exist in their respective files
+/* void Game::performEnemyTurn() {
+    // Remove this stub implementation - real one is in ai.cpp
+}
+
+void Game::playCardFromHand(int cardIndex) {
+    // Remove this stub implementation - real one is in card.cpp
+} */

@@ -113,6 +113,7 @@ void Game::playCardFromHand(int cardIndex) {
         case Card::TENSOR:
             int oldEnergy = state.playerEnergy;
             state.playerEnergy += card.effect;
+            increaseTensorGauge(1);  // Add this line to properly increase tensor
             state.playerHand.erase(state.playerHand.begin() + cardIndex);
             mvprintw(LINES-1, 2, "Used Tensor Shard: Energy %d → %d", 
                     oldEnergy, state.playerEnergy);
@@ -187,15 +188,18 @@ void Game::attackWithCard(int cardIndex) {
                 if (selected == 0) {
                     state.enemyHealth -= state.playerField[cardIndex].attack;
                     mvprintw(LINES-1, 2, "%s attacks enemy directly for %d damage!", 
-                            state.playerField[cardIndex].name.c_str(), 
-                            state.playerField[cardIndex].attack);
+                            attacker.name.c_str(), 
+                            attacker.attack);
                 } else {
                     int enemyIndex = selected - 1;
                     Card& defender = state.enemyField[enemyIndex];
                     defender.health -= attacker.attack;
                     
+                    // Use consistent name formatting like in GameUI::drawCard
                     mvprintw(LINES-1, 2, "%s attacks %s for %d damage!", 
-                            attacker.name.c_str(), defender.name.c_str(), attacker.attack);
+                            attacker.name.c_str(),
+                            defender.name.c_str(),
+                            attacker.attack);
                     
                     if(defender.health <= 0) {
                         napms(1000);

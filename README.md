@@ -51,9 +51,9 @@ on the field, they are stackable, and serve to spice up the game minimally.
 
 ## Tensor
 
-**Tensor** is the energy on the field. It is on default, zero. However, as it increases, by turn, and by playing **Tensor Shards**, it eventually peaks before restarting.
+**Tensor** is the energy on the field. It is on default, zero. However, as it increases, by turn, and by playing **Tensor Shards**, it eventually peaks before restarting. Its peak is initially at 3, before it peaks. After its peak, it resets to zero then its maximum is 4. This goes until its maximum is 7.
 
-Once it peaks, it forces both players to initiate a game. These are very simple games, that forces a player to take damage.
+Once it peaks, it forces both players to initiate a minigame. These are very simple games, that forces a player to take damage.
 
 ---
 
@@ -61,13 +61,37 @@ Once it peaks, it forces both players to initiate a game. These are very simple 
 
 The minigames are small, simple games, that spice up the game minimally.
 
-1. Coin Toss guessing
-2. High-Low
-3. Simple Roulette
-4. Dice Roll
-5. Rock-Paper-Scissors
+1. Coin Toss guessing - player guesses the outcome of a coin toss
+2. High-Low - two cards, one revealed. Player guesses if next card is higher or lower
+3. Simple Roulette - Player picks on simple wheel space to spin on
+4. Dice Roll - Player guesses outcome of a dice roll
+5. Rock-Paper-Scissors - Player plays against a simple enemy on Rock Paper Scissors
 
-As you can see, they are simple enough to have a binary outcome, with a very slim chance of draws.
+As you can see, they are simple enough to have a binary outcome.
+
+---
+
+## Synergy
+
+Synergy comes as a feature of the faction system. There are four factions in this game, along with roles. Roles as of yet do not have any function, merely just to differentiate between Champions.
+
+1. Techno
+2. Cyber
+3. Exec
+4. Virtu-Machina
+
+They all grant different buffs in synergy when they are present on the field. There are 3 different levels of synergy. It is as follows: two cards of the same faction create a level 1 synergy. This goes until all four cards on the field, that is the maximum space on the player's side of the field contains the same faction, in which this is a level 3 synergy, the max.
+
+The buffs are as follows:
+
+1. Techno --> ATK buff (+1/+2/+3)
+2. Cyber --> HP buff (+1/+2/+3)
+3. Exec --> Cost reduction (to other exec faction cards in hand of -1/-2/-3)
+4. Virtu-Machina --> Energy buff (+1/+2/+3 per turn synergy is active) and +1 to tensor gauge per turn
+
+Synergy buffs are active so as long as the number of cards of their factions are on the field. Here, once you put on a new card, it will check for synergy to activate. However, whenever a champion is destroyed, the check for recalculating synergy levels only come at the end of the turn.
+
+---
 
 ## Development
 
@@ -79,3 +103,8 @@ Features as well had a lot to be cut as time was not enough to implement it all.
 ### Difficulties
 
 As a person who develops on Linux, Windows proved weird when running GUI components, and having to run instances of X11 graphic drivers also made it difficult to debug. However, after some time, I moved the project onto windows, and reluctantly, developed most of it with the windows API in mind.
+
+<!--TO DO:
+1. Perfect Concord
+2. roles - Merc, Nomad, Corpo, Mage
+-->
