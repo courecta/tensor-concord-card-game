@@ -91,6 +91,59 @@ The buffs are as follows:
 
 Synergy buffs are active so as long as the number of cards of their factions are on the field. Here, once you put on a new card, it will check for synergy to activate. However, whenever a champion is destroyed, the check for recalculating synergy levels only come at the end of the turn.
 
+### Perfect Synergy - Tensor Concordia
+
+When all four factions are present on the field simultaneously, a special synergy called "Tensor Concordia" activates, granting all champions +3/+3 stats. This represents the perfect harmony of all factions working together.
+
+### Roles
+
+While currently not affecting gameplay directly, champions are divided into four roles that represent their background in the cyberpunk world:
+- Merc: Mercenaries and hired guns
+- Nomad: Independent wanderers and scouts
+- Corpo: Corporate agents and executives
+- Mage: Tech-wizards and data-manipulators
+
+### Card Types Detail
+
+#### Champions
+Champions have base stats that can be enhanced through:
+- Faction synergies
+- Artifact buffs
+- Tensor Concordia
+- Initial stats range: Cost(1-3), ATK(1-3), HP(2-3)
+
+#### Artifacts
+Artifacts provide permanent buffs:
+- Even-numbered effects buff HP
+- Odd-numbered effects buff ATK
+- Cost equals the buff amount
+- Cannot be removed once applied
+
+#### Tensor Shards
+- Always cost 0 energy
+- Grant 1-2 energy instantly
+- Increase tensor gauge by 1
+- Can chain multiple in one turn
+
+### Tensor Gauge Mechanics
+
+The tensor gauge has several important properties:
+- Starts with maximum of 3
+- Increases maximum by 1 after each peak (up to 7)
+- Triggers a random minigame at peak
+- Can be increased by:
+  - Playing Tensor Shards
+  - Virtu-Machina faction synergy
+  - Natural turn progression
+
+### Game Balance
+
+The game is designed around key balance elements:
+- Four card spaces enforce strategic placement
+- Energy management between card costs and tensor gains
+- Risk/reward of increasing tensor gauge
+- Faction synergy vs mixed strategy decisions
+
 ---
 
 ## Development
