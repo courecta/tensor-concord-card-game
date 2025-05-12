@@ -6,18 +6,18 @@
 
 ---
 
-00:00 - Compile
-00:30 - Game Start
-00:41 - Game 1 [LOSE]
-00:45 - Help Menu exploring
-03:05 - Tensor Peak [Minigame 1]
-05:18 - Using Artifact
-05:40 - Tensor Peak [Minigame 2]
-06:00 - Minigame practice menu exploring
-07:35 - Game 2 [WIN]
-09:03 - Tensor Peak [Minigame 3]
-10:10 - Using Artifact
-11:11 - WIN
+- 00:00 - Compile
+- 00:30 - Game Start
+- 00:41 - Game 1 [LOSE]
+- 00:45 - Help Menu exploring
+- 03:05 - Tensor Peak [Minigame 1]
+- 05:18 - Using Artifact
+- 05:40 - Tensor Peak [Minigame 2]
+- 06:00 - Minigame practice menu exploring
+- 07:35 - Game 2 [WIN]
+- 09:03 - Tensor Peak [Minigame 3]
+- 10:10 - Using Artifact
+- 11:11 - WIN
 
 ## Build Instructions
 
