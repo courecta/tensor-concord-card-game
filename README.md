@@ -2,7 +2,9 @@
 
 ## Demo
 
-https://drive.google.com/file/d/19z3b7filhDP9yixxzw6PsRcmYFdyU7xe/view?usp=sharing
+[Click here to view video](https://drive.google.com/file/d/19z3b7filhDP9yixxzw6PsRcmYFdyU7xe/view?usp=sharing)
+
+---
 
 00:00 - Compile
 00:30 - Game Start
